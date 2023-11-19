@@ -1,4 +1,6 @@
+import 'package:chartapp/Models/MachineTemperature_Model.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,18 +57,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  List<MachineTemperatureModel> temperatureData = [
+    MachineTemperatureModel(name: "Machine1", dateTime: "08:00", value: 28),
+    MachineTemperatureModel(name: "Machine2", dateTime: "09:00", value: 24),
+    MachineTemperatureModel(name: "Machine3", dateTime: "10:00", value: 32),
+    MachineTemperatureModel(name: "Machine4", dateTime: "11:00", value: 30),
+    MachineTemperatureModel(name: "Machine5", dateTime: "12:00", value: 28),
+    MachineTemperatureModel(name: "Machine6", dateTime: "13:00", value: 38),
+    MachineTemperatureModel(name: "Machine7", dateTime: "14:00", value: 40),
+    MachineTemperatureModel(name: "Machine8", dateTime: "15:00", value: 38),
+    MachineTemperatureModel(name: "Machine9", dateTime: "16:00", value: 32),
+    MachineTemperatureModel(name: "Machine10", dateTime: "17:00", value: 25),
+  ];
+  List<MachineTemperatureModel> temperatureData2 = [
+    MachineTemperatureModel(name: "Machine1", dateTime: "08:00", value: 38),
+    MachineTemperatureModel(name: "Machine2", dateTime: "09:00", value: 34),
+    MachineTemperatureModel(name: "Machine3", dateTime: "10:00", value: 35),
+    MachineTemperatureModel(name: "Machine4", dateTime: "11:00", value: 30),
+    MachineTemperatureModel(name: "Machine5", dateTime: "12:00", value: 28),
+    MachineTemperatureModel(name: "Machine6", dateTime: "13:00", value: 36),
+    MachineTemperatureModel(name: "Machine7", dateTime: "14:00", value: 40),
+    MachineTemperatureModel(name: "Machine8", dateTime: "15:00", value: 38),
+    MachineTemperatureModel(name: "Machine9", dateTime: "16:00", value: 32),
+    MachineTemperatureModel(name: "Machine10", dateTime: "17:00", value: 50),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -86,40 +100,109 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: SingleChildScrollView(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SfCartesianChart(
+            // legend: Legend(
+            //   isVisible: true,
+            //   position: LegendPosition.bottom,
+            //   textStyle: const TextStyle(
+            //     color: Colors.black,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
+            tooltipBehavior: TooltipBehavior(
+              enable: true,
+              color: Colors.black,
+              textStyle: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            title: ChartTitle(
+              text: "Machine Temperature",
+              textStyle: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            // borderColor: Colors.black,
+            // borderWidth: 3,
+            backgroundColor: Colors.transparent,
+            primaryXAxis: CategoryAxis(
+              majorGridLines: const MajorGridLines(
+                color: Colors.black,
+                width: 3,
+              ),
+              labelStyle: const TextStyle(
+                color: Colors.purple,
+                fontWeight: FontWeight.bold,
+              ),
+              title: AxisTitle(
+                text: "Time of 19/11/2023",
+                textStyle: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            primaryYAxis: NumericAxis(
+              majorGridLines: const MajorGridLines(
+                color: Colors.black,
+                width: 3,
+              ),
+              labelStyle: const TextStyle(
+                color: Colors.orange,
+                fontWeight: FontWeight.bold,
+              ),
+              title: AxisTitle(
+                text: "Temperature",
+                textStyle: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            plotAreaBackgroundColor: Colors.blue.shade100,
+            plotAreaBorderColor: Colors.black,
+            plotAreaBorderWidth: 3,
+            borderColor: Colors.black,
+            borderWidth: 3,
+            series: <ChartSeries>[
+              LineSeries<MachineTemperatureModel, String>(
+                name: "S1",
+                color: Colors.red,
+                markerSettings: const MarkerSettings(
+                  isVisible: true,
+                  // กำหนดรูปแบบและสีของจุด marker
+                  shape: DataMarkerType.circle,
+                  color: Colors.red,
+                ),
+                dataSource: temperatureData,
+                xValueMapper: (MachineTemperatureModel machine, _) =>
+                    machine.dateTime,
+                yValueMapper: (MachineTemperatureModel machine, _) =>
+                    machine.value,
+                // dataLabelMapper: (MachineTemperatureModel machine, _) =>
+                //     "${machine.name} C",
+                yAxisName: "Temperature",
+                // pointColorMapper: (MachineTemperatureModel machine, _) =>
+                //     machine.value > 30 ? Colors.red : Colors.blue,
+                // dataLabelSettings: const DataLabelSettings(
+                //   isVisible: true,
+                //   textStyle: TextStyle(
+                //     color: Colors.blue,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+              ),
+            ],
+          ),
+        ],
+      )),
     );
   }
 }
